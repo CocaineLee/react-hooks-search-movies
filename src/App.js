@@ -3,28 +3,29 @@ import { Container, Grid } from '@material-ui/core'
 import './App.css';
 import MovieSuggest from './components/MovieSuggest/View';
 import SimilarMovies from './components/SimilarMovies/View';
+import { connect } from "react-redux";
 
 class App extends Component {
-  state = {
-    selectedMovieId: null,
-  };
+  // state = {
+  //   selectedMovieId: null,
+  // };
 
-  handleMovieSelect = movieId => {
-    this.setState({ selectedMovieId: movieId });
-  };
+  // handleMovieSelect = movieId => {
+  //   this.setState({ selectedMovieId: movieId });
+  // };
 
   render() {
     return (
       <Container maxWidth="xl" className='App'>
         <Grid container spacing={5}>
           <Grid item xs>
-            <MovieSuggest onMovieSelect={this.handleMovieSelect}></MovieSuggest>
+            <MovieSuggest ></MovieSuggest>
           </Grid>
         </Grid>
         <Grid container spacing={5}>
           <Grid item xs>
             {
-              this.state.selectedMovieId && <SimilarMovies movieId={this.state.selectedMovieId}></SimilarMovies>
+              this.props.selectedMovieId && <SimilarMovies ></SimilarMovies>
             }
           </Grid>
         </Grid>
@@ -32,5 +33,7 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+const mapStateToProps = state => ({
+  selectedMovieId: state.movieSuggest.selectedMovieId,
+});
+export default connect(mapStateToProps)(App);

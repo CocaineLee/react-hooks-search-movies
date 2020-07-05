@@ -3,8 +3,9 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { connect } from "react-redux";
 
-export default class SimilarMovies extends Component {
+class SimilarMovies extends Component {
   state = {
     loading: false,
     movies: [],
@@ -86,3 +87,7 @@ export default class SimilarMovies extends Component {
     )
   }
 }
+const mapStateToProps = state => ({
+  movieId: state.movieSuggest.selectedMovieId,
+});
+export default connect(mapStateToProps)(SimilarMovies);
