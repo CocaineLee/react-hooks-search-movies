@@ -6,14 +6,6 @@ import SimilarMovies from './components/SimilarMovies/View';
 import { connect } from "react-redux";
 
 class App extends Component {
-  // state = {
-  //   selectedMovieId: null,
-  // };
-
-  // handleMovieSelect = movieId => {
-  //   this.setState({ selectedMovieId: movieId });
-  // };
-
   render() {
     return (
       <Container maxWidth="xl" className='App'>

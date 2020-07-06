@@ -12,6 +12,6 @@ export default (state = initState, action) => {
         selectedMovieId: action.payload
       }
     default:
-      return initState;
+      return state;
   }
 }

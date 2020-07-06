@@ -4,23 +4,20 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from "react-redux";
-
+import { fetchMoviesList, setMovies } from '../../action/similarMovies'
 class SimilarMovies extends Component {
-  state = {
-    loading: false,
-    movies: [],
-  }
+
 
   componentDidMount() {
-    this.searchSimilarMovie()
+    this.props.fetchMoviesList(this.props.movieId)
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.movieId !== this.props.movieId) {
-      this.searchSimilarMovie()
+      this.props.fetchMoviesList(this.props.movieId)
     }
     if (prevProps.movieId && !this.props.movieId) {
-      this.setState({ movies: [] });
+      this.props.setMovies([])
     }
   }
 
@@ -28,32 +25,8 @@ class SimilarMovies extends Component {
     console.log("Component will unmount ....");
   }
 
-  searchSimilarMovie = () => {
-    const movieId = this.props.movieId
-
-    if (!movieId) return
-
-    this.setState({ loading: true })
-
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=432ea214d5481d224e14b555d6d5869b&language=en-US&page=1`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Could not search similar movies!');
-        }
-        return response.json();
-      })
-      .then(({ results }) => {
-        this.setState({ movies: results });
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => this.setState({ loading: false }))
-  }
-
   render() {
-    const { movies, loading } = this.state
-    const { movieId } = this.props
+    const { movies, loading ,movieId} = this.props
 
     if (loading) {
       return <CircularProgress />
@@ -66,7 +39,6 @@ class SimilarMovies extends Component {
         </span>
       )
     }
-
     return (
       <div className='similar-movies-container'>
         <GridList cols={4} spacing={10}>
@@ -89,5 +61,8 @@ class SimilarMovies extends Component {
 }
 const mapStateToProps = state => ({
   movieId: state.movieSuggest.selectedMovieId,
+  loading: state.similarMovies.loading,
+  movies: state.similarMovies.movies
 });
-export default connect(mapStateToProps)(SimilarMovies);
+
+export default connect(mapStateToProps, { fetchMoviesList, setMovies })(SimilarMovies);
